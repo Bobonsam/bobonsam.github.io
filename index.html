@@ -703,7 +703,7 @@
         <div class="chart-tabs reveal" role="tablist" aria-label="Pilih pair chart">
           <button class="chart-tab active" type="button" data-pane="bnb">BNB / USDT</button>
           <button class="chart-tab" type="button" data-pane="btc">BTC / USDT</button>
-          <button class="chart-tab" type="button" data-pane="idr">USD / IDR</button>
+          <button class="chart-tab" type="button" data-pane="idr">IDR / USDT</button>
         </div>
         <div class="chart-wrap reveal" id="chartWrap">
           <div class="chart-pane active" id="pane-bnb"></div>
@@ -1023,7 +1023,7 @@
       (function () {
         var tabs = document.querySelectorAll('.chart-tab');
         var panes = { bnb: document.getElementById('pane-bnb'), btc: document.getElementById('pane-btc'), idr: document.getElementById('pane-idr') };
-        var symbols = { bnb: 'BINANCE:BNBUSDT', btc: 'BINANCE:BTCUSDT', idr: 'FX:USDIDR' };
+        var symbols = { bnb: 'BINANCE:BNBUSDT', btc: 'BINANCE:BTCUSDT', idr: 'BINANCE:USDTIDR' };
         var order = ['bnb', 'btc', 'idr'];
         var current = 'bnb';
         if (!panes.bnb) return;
