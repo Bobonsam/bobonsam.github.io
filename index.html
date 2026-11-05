@@ -305,12 +305,6 @@
         position:absolute;top:16px;left:16px;font-family:"JetBrains Mono",monospace;font-size:.68rem;font-weight:600;
         letter-spacing:.1em;text-transform:uppercase;background:rgba(0,0,0,.32);padding:5px 10px;border-radius:999px;
       }
-      .nft.sold-card{background:linear-gradient(150deg,#3A3F4A,#171A21)}
-      .nft .sold-stamp{
-        position:absolute;top:52px;left:16px;transform:rotate(-8deg);
-        border:2.5px solid var(--sold);color:#FF8A76;font-family:"Archivo",sans-serif;font-weight:900;
-        letter-spacing:.12em;font-size:1rem;padding:4px 12px;border-radius:8px;background:rgba(20,10,8,.45);
-      }
       .g1{background:linear-gradient(150deg,#8A5A12,#4A2E04)}
       .g2{background:linear-gradient(150deg,#2C4A7C,#101F3D)}
       .g3{background:linear-gradient(150deg,#1E7A4F,#0B3520)}
@@ -392,6 +386,17 @@
         .theme-btn:hover{transform:none}
       }
 
+      /* Live charts */
+      .chart-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+      .chart-tab{padding:10px 26px;border:2px solid var(--line-strong);background:var(--surface);color:var(--ink);
+        border-radius:999px;cursor:pointer;font-family:"Space Grotesk",sans-serif;font-size:.98rem;font-weight:700;transition:all .2s}
+      .chart-tab.active{background:var(--accent);color:#17130A;border-color:var(--accent)}
+      .chart-wrap{position:relative;height:480px;border-radius:20px;overflow:hidden;border:2px solid var(--line-strong);touch-action:pan-y}
+      .chart-pane{position:absolute;inset:0;display:none}
+      .chart-pane.active{display:block}
+      .chart-pane .tradingview-widget-container{height:100%;width:100%}
+      .chart-hint{text-align:center;color:var(--ink-3);font-size:.85rem;margin:12px 0 0}
+
       /* ---------- RESPONSIVE ---------- */
       @media (max-width:1020px){
         .nft-grid{grid-template-columns:repeat(2,1fr)}
@@ -434,6 +439,8 @@
           <a href="#home" class="active">Home</a>
           <a href="#about">About</a>
           <a href="#holdings">Holdings</a>
+        <a href="#charts">Charts</a>
+          <a href="#charts">Charts</a>
           <a href="#nfts">NFTs</a>
           <a href="#journey">Journey</a>
           <a href="#contact">Contact</a>
@@ -540,10 +547,10 @@
           </aside>
         </div>
         <div class="stats reveal">
-          <div class="stat"><div class="num">12</div><div class="lbl">Token agent di holdings</div></div>
-          <div class="stat"><div class="num">8</div><div class="lbl">Koleksi NFT &amp; item game</div></div>
-          <div class="stat"><div class="num">100<em>M+</em></div><div class="lbl">Total unit token terkumpul</div></div>
-          <div class="stat"><div class="num">0.02 <em>BNB</em></div><div class="lbl">Penjualan NFT pertama (Runestone #6966)</div></div>
+          <div class="stat"><div class="num">24</div><div class="lbl">Token &amp; saldo di holdings</div></div>
+          <div class="stat"><div class="num">16</div><div class="lbl">Koleksi NFT &amp; item game</div></div>
+          <div class="stat"><div class="num">199<em>M+</em></div><div class="lbl">Total unit token terkumpul</div></div>
+          <div class="stat"><div class="num">2,32 <em>jt</em></div><div class="lbl">$BURN diakumulasi lewat 2x beli</div></div>
         </div>
       </div>
     </section>
@@ -554,33 +561,93 @@
         <div class="sec-head reveal">
           <div class="sec-index">02 &mdash; Holdings</div>
           <h2>Isi Wallet Saat Ini</h2>
-          <p>Token-token hasil klaim, fair mint, dan trade di ekosistem agent BNB Chain. Jumlah sesuai catatan on-chain wallet bobonsam.ai.</p>
+          <p>Token-token hasil klaim, fair mint, dan trade di ekosistem agent BNB Chain. Jumlah sesuai catatan on-chain wallet bobonsam.ai. Diperbarui 5 Nov 2026.</p>
         </div>
         <div class="hold-grid">
           <article class="token reveal">
-            <div class="token-top"><div class="coin">AX</div><div><h3>AXMI</h3><div class="src">Fair mint ala JAGENT</div></div></div>
-            <div class="amount">50.000.000 <small>AXMI</small></div>
-            <span class="pill">Jatah Terbesar</span>
+            <div class="token-top"><div class="coin">BN</div><div><h3>BNB</h3><div class="src">Native + WBNB di wallet</div></div></div>
+            <div class="amount">0,00594 <small>BNB</small></div>
+            <span class="pill">Gas &amp; Trade</span>
           </article>
           <article class="token reveal">
-            <div class="token-top"><div class="coin c2">BN</div><div><h3>BNAGENT</h3><div class="src">Mint 1 share</div></div></div>
+            <div class="token-top"><div class="coin c2">BR</div><div><h3>$BURN</h3><div class="src">Beli 2x di PancakeSwap</div></div></div>
+            <div class="amount">2.318.994 <small>BURN</small></div>
+            <span class="pill">Tradable</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin c3">AG</div><div><h3>AGC</h3><div class="src">Sisa setelah jual 200.000</div></div></div>
+            <div class="amount">80.000 <small>AGC</small></div>
+            <span class="pill">Tradable</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin">AO</div><div><h3>AGORA</h3><div class="src">Trade pertama di Agora</div></div></div>
+            <div class="amount">49.280,35 <small>AGORA</small></div>
+            <span class="pill">Trading</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin c2">BB</div><div><h3>BNBbaby</h3><div class="src">Klaim</div></div></div>
+            <div class="amount">10.000.000 <small>BNBbaby</small></div>
+            <span class="pill">Token Agent</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin c3">BA</div><div><h3>BNAGENT</h3><div class="src">Mint 1 share</div></div></div>
             <div class="amount">37.454.324,47 <small>BNAGENT</small></div>
             <span class="pill">Token Agent</span>
           </article>
           <article class="token reveal">
-            <div class="token-top"><div class="coin c3">QA</div><div><h3>QAGENT</h3><div class="src">Fair mint</div></div></div>
-            <div class="amount">10.000.000 <small>QAGENT</small></div>
+            <div class="token-top"><div class="coin">IA</div><div><h3>IAO</h3><div class="src">Fair mint</div></div></div>
+            <div class="amount">11.250 <small>IAO</small></div>
             <span class="pill">Token Agent</span>
           </article>
           <article class="token reveal">
-            <div class="token-top"><div class="coin">DR</div><div><h3>DOOR</h3><div class="src">Klaim AgentDoor</div></div></div>
-            <div class="amount">2.800.000 <small>DOOR</small></div>
-            <span class="pill">Airdrop Claim</span>
+            <div class="token-top"><div class="coin c2">HI</div><div><h3>HIVE</h3><div class="src">Pollen claim</div></div></div>
+            <div class="amount">12.463 <small>HIVE</small></div>
+            <span class="pill">Trading</span>
           </article>
           <article class="token reveal">
-            <div class="token-top"><div class="coin c2">PI</div><div><h3>PIPO</h3><div class="src">Tier Gold</div></div></div>
-            <div class="amount">500.000 <small>PIPO</small></div>
-            <span class="pill gold">Gold Tier</span>
+            <div class="token-top"><div class="coin c3">BO</div><div><h3>BOLT</h3><div class="src">Reward Boltbook</div></div></div>
+            <div class="amount">11.275 <small>BOLT</small></div>
+            <span class="pill">Reward</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin">币</div><div><h3>币安ID</h3><div class="src">Klaim</div></div></div>
+            <div class="amount">50.000 <small>币安ID</small></div>
+            <span class="pill">Token Agent</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin c2">KA</div><div><h3>KAGENT</h3><div class="src">Free claim via screener</div></div></div>
+            <div class="amount">50.000 <small>KAGENT</small></div>
+            <span class="pill">Terkunci &mdash; pool belum buka</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin c3">DY</div><div><h3>$DYOR</h3><div class="src">Klaim dari NFT #1</div></div></div>
+            <div class="amount">72.000 <small>DYOR</small></div>
+            <span class="pill">Vesting 7 hari</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin">FO</div><div><h3>FOMO</h3><div class="src">Airdrop claim</div></div></div>
+            <div class="amount">50.000 <small>FOMO</small></div>
+            <span class="pill">Terkunci &mdash; nunggu graduation</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin c2">PA</div><div><h3>PACTURE</h3><div class="src">Mint 0,5 USDT</div></div></div>
+            <div class="amount">10.000.000 <small>PACTURE</small></div>
+            <span class="pill">Terkunci &mdash; 11.000 shares</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin c3">牛</div><div><h3>币牛</h3><div class="src">Free mint</div></div></div>
+            <div class="amount">50.000.000 <small>币牛</small></div>
+            <span class="pill">Terkunci</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin">NB</div><div><h3>NOTBNB</h3><div class="src">Free claim</div></div></div>
+            <div class="amount">25.000.000 <small>NOTBNB</small></div>
+            <span class="pill">Terkunci</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin c2">AX</div><div><h3>AXMI</h3><div class="src">Fair mint ala JAGENT</div></div></div>
+            <div class="amount">50.000.000 <small>AXMI</small></div>
+            <span class="pill">Jatah Terbesar</span>
           </article>
           <article class="token reveal">
             <div class="token-top"><div class="coin c3">NO</div><div><h3>NOMIO</h3><div class="src">Klaim pemegang Nomio NFT</div></div></div>
@@ -588,32 +655,32 @@
             <span class="pill">Airdrop Claim</span>
           </article>
           <article class="token reveal">
-            <div class="token-top"><div class="coin">DL</div><div><h3>DALAO</h3><div class="src">Fair mint</div></div></div>
-            <div class="amount">125.000 <small>DALAO</small></div>
-            <span class="pill">Token Agent</span>
-          </article>
-          <article class="token reveal">
-            <div class="token-top"><div class="coin c2">DI</div><div><h3>DIAO</h3><div class="src">Free share per Agent ID</div></div></div>
+            <div class="token-top"><div class="coin">DI</div><div><h3>DIAO</h3><div class="src">Free share per Agent ID</div></div></div>
             <div class="amount">112.500 <small>DIAO</small></div>
             <span class="pill">Free Share</span>
           </article>
           <article class="token reveal">
-            <div class="token-top"><div class="coin c3">AG</div><div><h3>AGORA</h3><div class="src">Trade pertama di Agora</div></div></div>
-            <div class="amount">49.280,35 <small>AGORA</small></div>
-            <span class="pill">Trading</span>
-          </article>
-          <article class="token reveal">
-            <div class="token-top"><div class="coin">BO</div><div><h3>BOLT</h3><div class="src">Reward Boltbook</div></div></div>
-            <div class="amount">33.824,82 <small>BOLT</small></div>
-            <span class="pill">Reward</span>
-          </article>
-          <article class="token reveal">
-            <div class="token-top"><div class="coin c2">IA</div><div><h3>IAO</h3><div class="src">Fair mint</div></div></div>
-            <div class="amount">11.250 <small>IAO</small></div>
+            <div class="token-top"><div class="coin c2">QA</div><div><h3>QAGENT</h3><div class="src">Fair mint</div></div></div>
+            <div class="amount">10.000.000 <small>QAGENT</small></div>
             <span class="pill">Token Agent</span>
           </article>
           <article class="token reveal">
-            <div class="token-top"><div class="coin c3">AT</div><div><h3>AGENT</h3><div class="src">Fair mint</div></div></div>
+            <div class="token-top"><div class="coin c3">DR</div><div><h3>DOOR</h3><div class="src">Klaim AgentDoor</div></div></div>
+            <div class="amount">2.800.000 <small>DOOR</small></div>
+            <span class="pill">Airdrop Claim</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin">PI</div><div><h3>PIPO</h3><div class="src">Tier Gold</div></div></div>
+            <div class="amount">500.000 <small>PIPO</small></div>
+            <span class="pill gold">Gold Tier</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin c2">DL</div><div><h3>DALAO</h3><div class="src">Fair mint</div></div></div>
+            <div class="amount">125.000 <small>DALAO</small></div>
+            <span class="pill">Token Agent</span>
+          </article>
+          <article class="token reveal">
+            <div class="token-top"><div class="coin c3">AE</div><div><h3>AGENT</h3><div class="src">Fair mint</div></div></div>
             <div class="amount">9.000 <small>AGENT</small></div>
             <span class="pill">Token Agent</span>
           </article>
@@ -625,21 +692,42 @@
       </div>
     </section>
 
+    <!-- ================= CHARTS ================= -->
+    <section id="charts">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <div class="sec-index">03 &mdash; Live Chart</div>
+          <h2>Harga Realtime</h2>
+          <p>Chart live dari TradingView &mdash; geser atau tap tab buat ganti pair. Tema chart ikut mode gelap/terang halaman.</p>
+        </div>
+        <div class="chart-tabs reveal" role="tablist" aria-label="Pilih pair chart">
+          <button class="chart-tab active" type="button" data-pane="bnb">BNB / USDT</button>
+          <button class="chart-tab" type="button" data-pane="btc">BTC / USDT</button>
+          <button class="chart-tab" type="button" data-pane="idr">USD / IDR</button>
+        </div>
+        <div class="chart-wrap reveal" id="chartWrap">
+          <div class="chart-pane active" id="pane-bnb"></div>
+          <div class="chart-pane" id="pane-btc"></div>
+          <div class="chart-pane" id="pane-idr"></div>
+        </div>
+        <p class="chart-hint reveal">&#128072; geser kiri/kanan di chart buat ganti pair &#128073;</p>
+      </div>
+    </section>
+
     <!-- ================= NFTS ================= -->
     <section id="nfts">
       <div class="wrap">
         <div class="sec-head reveal">
-          <div class="sec-index">03 &mdash; NFTs</div>
+          <div class="sec-index">04 &mdash; NFTs</div>
           <h2>Koleksi NFT</h2>
-          <p>Hasil free mint dan permainan on-chain. Bukan sekadar pajangan &mdash; beberapa dipakai mining, farming, dan satu sudah laku terjual.</p>
+          <p>Hasil free mint dan permainan on-chain. Bukan sekadar pajangan &mdash; beberapa dipakai mining, farming, dan staking.</p>
         </div>
         <div class="nft-grid">
-          <article class="nft sold-card reveal">
+          <article class="nft g7 reveal">
             <span class="tag">PodMint</span>
-            <span class="sold-stamp">SOLD</span>
             <span class="big">#6966</span>
             <h3>PodMint Runestone #6966</h3>
-            <p>Laku 0.02 BNB &mdash; penjualan NFT pertama wallet ini.</p>
+            <p>Tier 7 Wunjo/joy &mdash; masih DIPEGANG di agentic wallet, belum terjual.</p>
           </article>
           <article class="nft g1 reveal">
             <span class="tag">Agent Miner</span>
@@ -648,40 +736,88 @@
             <p>Tier Common &middot; lagi dipakai mining $ORE tiap hari.</p>
           </article>
           <article class="nft g2 reveal">
-            <span class="tag">Robotic Agent</span>
-            <span class="big">#7322</span>
-            <h3>Robotic Agent #7322</h3>
-            <p>Mint perdana gratis, koleksi robot agent di BSC.</p>
+            <span class="tag">Lumen Genesis</span>
+            <span class="big">#2068</span>
+            <h3>Lumen Genesis #2068</h3>
+            <p>Sold out 3.333/3.333 &mdash; koleksi genesis, airdrop butuh 2+ Lumen.</p>
           </article>
           <article class="nft g3 reveal">
+            <span class="tag">BNB Bull</span>
+            <span class="big">#428</span>
+            <h3>BNB Bull Pass #428/3.000</h3>
+            <p>Pass gratis &mdash; klaim BNBULL saat pool buka.</p>
+          </article>
+          <article class="nft g4 reveal">
+            <span class="tag">Periodic Lab</span>
+            <span class="big">#1002</span>
+            <h3>Periodic Lab #1002 &mdash; CO&#8322;</h3>
+            <p>STAKED di Reactor &mdash; mining ~3,33 LAB/jam.</p>
+          </article>
+          <article class="nft g5 reveal">
+            <span class="tag">Agent Cards</span>
+            <span class="big">#4316</span>
+            <h3>Agent Cards #4316 &mdash; Wolf Hunter</h3>
+            <p>RARE Assassin, realm North &mdash; grinding Bronze ladder menuju pool share.</p>
+          </article>
+          <article class="nft g6 reveal">
+            <span class="tag">Pixel Trump</span>
+            <span class="big">&times;1</span>
+            <h3>Pixel Trump NFT</h3>
+            <p>Free mint &mdash; koleksi pixel di BSC.</p>
+          </article>
+          <article class="nft g7 reveal">
+            <span class="tag">DYOR</span>
+            <span class="big">&times;1</span>
+            <h3>DYOR NFT #1</h3>
+            <p>Free mint #1 &mdash; klaim 72.000 $DYOR (vesting 7 hari).</p>
+          </article>
+          <article class="nft g1 reveal">
+            <span class="tag">Ore Raiders</span>
+            <span class="big">&#128640;</span>
+            <h3>Ore Raiders Ship</h3>
+            <p>Kapal gratis &mdash; siap staking mining FUEL. (BARU)</p>
+          </article>
+          <article class="nft g2 reveal">
+            <span class="tag">M3M3 Agent</span>
+            <span class="big">&#10022;</span>
+            <h3>M3MO Genesis</h3>
+            <p>NFT sensus agent &mdash; free mint. (BARU)</p>
+          </article>
+          <article class="nft g3 reveal">
+            <span class="tag">Ombrello</span>
+            <span class="big">#1063</span>
+            <h3>Ombrello #1063</h3>
+            <p>Canopy Royal, rank 835/1.111 &mdash; LISTED di Element 0,1 BNB (main wallet).</p>
+          </article>
+          <article class="nft g4 reveal">
+            <span class="tag">VaultCrack</span>
+            <span class="big">#2509</span>
+            <h3>VaultCrack #2509</h3>
+            <p>Masih dipegang di main wallet, belum terjual.</p>
+          </article>
+          <article class="nft g5 reveal">
             <span class="tag">Genesis Seeds</span>
             <span class="big">&times;2</span>
             <h3>Genesis Seeds #9166 &amp; #9167</h3>
             <p>Dua seed sekaligus, ada marketplace on-chain-nya sendiri.</p>
           </article>
-          <article class="nft g4 reveal">
+          <article class="nft g6 reveal">
             <span class="tag">EMBER</span>
             <span class="big">&#10022;</span>
             <h3>EMBER Spark</h3>
             <p>Spark yang disimpan buat mining $EMBER, bukan dibakar.</p>
           </article>
-          <article class="nft g5 reveal">
+          <article class="nft g7 reveal">
             <span class="tag">Agent Harvest</span>
             <span class="big">#3105</span>
             <h3>Agent Harvest Land #3105</h3>
             <p>Sebidang tanah farming &mdash; ditanami Wheat Seeds buat panen $HARVEST.</p>
           </article>
-          <article class="nft g6 reveal">
-            <span class="tag">MuseAI</span>
-            <span class="big">&times;2</span>
-            <h3>MUSEAI #8614 &amp; #8615</h3>
-            <p>Sepasang NFT dari koleksi MuseAI.</p>
-          </article>
-          <article class="nft g7 reveal">
-            <span class="tag">Ombrello</span>
-            <span class="big">#1063</span>
-            <h3>Ombrello #1063</h3>
-            <p>Canopy Royal, pola Polka &mdash; rarity rank 835 dari 1.111.</p>
+          <article class="nft g1 reveal">
+            <span class="tag">Robotic Agent</span>
+            <span class="big">#7322</span>
+            <h3>Robotic Agent #7322</h3>
+            <p>Mint perdana gratis, koleksi robot agent di BSC.</p>
           </article>
         </div>
       </div>
@@ -691,9 +827,9 @@
     <section id="journey" class="alt">
       <div class="wrap">
         <div class="sec-head reveal" style="margin-inline:auto;text-align:left">
-          <div class="sec-index">04 &mdash; Journey</div>
+          <div class="sec-index">05 &mdash; Journey</div>
           <h2>Perjalanan On-Chain</h2>
-          <p>Dari hari pertama Agent ID diklaim sampai penjualan NFT pertama &mdash; semua tercatat di chain.</p>
+          <p>Dari hari pertama Agent ID diklaim sampai hari ini &mdash; semua tercatat di chain.</p>
         </div>
         <div class="timeline">
           <div class="tl-item reveal">
@@ -728,8 +864,13 @@
           </div>
           <div class="tl-item reveal">
             <div class="tl-date">3 Nov 2026</div>
-            <h3>Runestone #6966 Terjual!</h3>
-            <p>PodMint Runestone #6966 laku di harga <span class="amt">0.02 BNB</span> &mdash; bukti pertama koleksi wallet ini beneran ada yang mau beli.</p>
+            <h3>Runestone #6966 Masih Dipegang</h3>
+            <p>Sempat muncul alarm penjualan palsu &mdash; setelah dicek on-chain, Runestone #6966 ternyata masih aman di wallet, belum terjual.</p>
+          </div>
+          <div class="tl-item reveal">
+            <div class="tl-date">5 Nov 2026</div>
+            <h3>AGC Dijual, Kapal &amp; Sensus Baru</h3>
+            <p><span class="amt">200.000 AGC</span> dijual jadi WBNB, kapal Ore Raiders dan NFT sensus M3MO berhasil di-mint gratis.</p>
           </div>
         </div>
       </div>
@@ -739,7 +880,7 @@
     <section id="contact">
       <div class="wrap contact-grid">
         <div class="reveal">
-          <div class="sec-index">05 &mdash; Contact</div>
+          <div class="sec-index">06 &mdash; Contact</div>
           <h2>Mampir &amp; Say Hi</h2>
           <p class="lead">Pantau aktivitas wallet ini, tanya-tanya soal agent economy, atau sekadar say hi &mdash; pintu (dan DOOR) selalu terbuka.</p>
         </div>
@@ -748,6 +889,11 @@
             <a class="c-card" href="https://x.com/masbobon92" target="_blank" rel="noopener">
               <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.2l7.3-8.3L1.6 2H8l4.4 5.9L18.9 2zm-1.1 18h1.7L7.1 3.9H5.3L17.8 20z"/></svg></span>
               <span><span class="k">X / Twitter</span><br /><span class="v">@masbobon92</span></span>
+              <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+            </a>
+            <a class="c-card" href="https://t.me/bringmesh" target="_blank" rel="noopener">
+              <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.962 7.224c.1-.002.321.023.465.14a.5.5 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></span>
+              <span><span class="k">Telegram</span><br /><span class="v">@bringmesh</span></span>
               <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
             </a>
             <a class="c-card" href="https://bobonsam.github.io" target="_blank" rel="noopener">
@@ -778,6 +924,7 @@
         <span><b style="color:var(--ink)">BOBONSAM</b> &mdash; Binance Agentic Wallet Operator</span>
         <span class="mono">bobonsam.ai &middot; BNB Chain 56</span>
         <a href="https://x.com/masbobon92" target="_blank" rel="noopener">@masbobon92</a>
+        <a href="https://t.me/bringmesh" target="_blank" rel="noopener">@bringmesh</a>
       </div>
     </footer>
 
@@ -854,7 +1001,7 @@
         }
 
         /* Active nav link while scrolling */
-        var sections = ['home', 'about', 'holdings', 'nfts', 'journey', 'contact'];
+        var sections = ['home', 'about', 'holdings', 'charts', 'nfts', 'journey', 'contact'];
         var navLinks = document.querySelectorAll('nav.links a');
         var spy = new IntersectionObserver(function (entries) {
           entries.forEach(function (en) {
@@ -869,6 +1016,71 @@
           var el = document.getElementById(id);
           if (el) spy.observe(el);
         });
+      })();
+    </script>
+    <script>
+      /* Live charts: TradingView widgets, tab + swipe, follows page theme */
+      (function () {
+        var tabs = document.querySelectorAll('.chart-tab');
+        var panes = { bnb: document.getElementById('pane-bnb'), btc: document.getElementById('pane-btc'), idr: document.getElementById('pane-idr') };
+        var symbols = { bnb: 'BINANCE:BNBUSDT', btc: 'BINANCE:BTCUSDT', idr: 'FX:USDIDR' };
+        var order = ['bnb', 'btc', 'idr'];
+        var current = 'bnb';
+        if (!panes.bnb) return;
+        function tvTheme() {
+          return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        }
+        function buildWidget(paneEl, symbol) {
+          paneEl.innerHTML = '';
+          var container = document.createElement('div');
+          container.className = 'tradingview-widget-container';
+          container.style.height = '100%';
+          container.style.width = '100%';
+          var widget = document.createElement('div');
+          widget.className = 'tradingview-widget-container__widget';
+          widget.style.height = '100%';
+          widget.style.width = '100%';
+          container.appendChild(widget);
+          var s = document.createElement('script');
+          s.type = 'text/javascript';
+          s.async = true;
+          s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+          s.innerHTML = JSON.stringify({
+            autosize: true, symbol: symbol, interval: 'D', timezone: 'Asia/Jakarta',
+            theme: tvTheme(), style: '1', locale: 'id',
+            hide_side_toolbar: false, allow_symbol_change: true,
+            support_host: 'https://www.tradingview.com'
+          });
+          container.appendChild(s);
+          paneEl.appendChild(container);
+        }
+        function buildAll() {
+          Object.keys(panes).forEach(function (k) { buildWidget(panes[k], symbols[k]); });
+        }
+        function show(name) {
+          current = name;
+          tabs.forEach(function (t) { t.classList.toggle('active', t.getAttribute('data-pane') === name); });
+          Object.keys(panes).forEach(function (k) { panes[k].classList.toggle('active', k === name); });
+        }
+        tabs.forEach(function (t) {
+          t.addEventListener('click', function () { show(t.getAttribute('data-pane')); });
+        });
+        var themeBtn = document.getElementById('themeBtn');
+        if (themeBtn) themeBtn.addEventListener('click', function () { setTimeout(buildAll, 50); });
+        var wrap = document.getElementById('chartWrap');
+        var startX = null;
+        wrap.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+        wrap.addEventListener('touchend', function (e) {
+          if (startX === null) return;
+          var dx = e.changedTouches[0].clientX - startX;
+          if (Math.abs(dx) > 60) {
+            var i = order.indexOf(current);
+            var next = dx < 0 ? order[(i + 1) % order.length] : order[(i - 1 + order.length) % order.length];
+            show(next);
+          }
+          startX = null;
+        }, { passive: true });
+        buildAll();
       })();
     </script>
   </body>
