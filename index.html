@@ -2299,20 +2299,46 @@ nav{backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
   })();
 </script>
 
-<style id="kei-music-20261113">
-#kei-music-player{position:fixed;right:16px;bottom:16px;width:min(340px,calc(100vw - 32px));z-index:9999;background:#0B0B0C;border:1px solid rgba(245,179,1,.4);border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.5);overflow:hidden}
-#kei-music-player .kmp-head{display:flex;align-items:center;justify-content:space-between;padding:7px 10px 7px 12px;background:#131315;border-bottom:1px solid rgba(245,179,1,.18)}
-#kei-music-player .kmp-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#F5B301;font-weight:700}
+<style id="kei-music2-20261113">
+#kei-music-player{position:fixed;right:16px;bottom:16px;width:min(360px,calc(100vw - 20px));z-index:9999;background:#0B0B0C;border:1px solid rgba(245,179,1,.4);border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.5);overflow:hidden}
+#kei-music-player .kmp-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px 7px 12px;background:#131315;border-bottom:1px solid rgba(245,179,1,.18);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+#kei-music-player .kmp-head:active{cursor:grabbing}
+#kei-music-player .kmp-title{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#F5B301;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #kei-music-player .kmp-title span{color:#F5F2EA;font-weight:400;letter-spacing:.02em;text-transform:none}
-#kei-music-close{background:none;border:none;color:#F5F2EA;font-size:16px;line-height:1;cursor:pointer;padding:2px 4px}
+#kei-music-close{background:none;border:none;color:#F5F2EA;font-size:16px;line-height:1;cursor:pointer;padding:2px 4px;flex:none}
 #kei-music-close:hover{color:#F5B301}
-#kei-music-player iframe{display:block;border:0;width:100%;height:80px}
+#kei-music-player iframe{display:block;border:0;width:100%;height:352px}
 @media (max-width:480px){#kei-music-player{right:10px;bottom:10px}}
 </style>
 <div id="kei-music-player">
-  <div class="kmp-head"><div class="kmp-title">Now Playing &nbsp;<span>The Weeknd &amp; Playboi Carti — Timeless</span></div><button id="kei-music-close" aria-label="Tutup pemutar musik">&times;</button></div>
-  <iframe src="https://open.spotify.com/embed/track/1Es7AUAhQvapIcoh3qMKDL?utm_source=generator&amp;theme=0" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="The Weeknd and Playboi Carti - Timeless"></iframe>
+  <div class="kmp-head" id="kei-music-drag"><div class="kmp-title">Now Playing &nbsp;<span>The Weeknd — Hurry Up Tomorrow (Full Album)</span></div><button id="kei-music-close" aria-label="Tutup pemutar musik">&times;</button></div>
+  <iframe src="https://open.spotify.com/embed/album/3OxfaVgvTxUTy7276t7SPU?utm_source=generator&amp;theme=0" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="The Weeknd - Hurry Up Tomorrow (album)"></iframe>
 </div>
-<script>document.getElementById('kei-music-close').addEventListener('click',function(){document.getElementById('kei-music-player').style.display='none';});</script>
+<script>
+(function(){
+  var box=document.getElementById('kei-music-player');
+  var bar=document.getElementById('kei-music-drag');
+  document.getElementById('kei-music-close').addEventListener('click',function(){box.style.display='none';});
+  var sx=0,sy=0,ox=0,oy=0,drag=false;
+  bar.addEventListener('pointerdown',function(e){
+    if(e.target.id==='kei-music-close')return;
+    drag=true;
+    var r=box.getBoundingClientRect();
+    box.style.left=r.left+'px'; box.style.top=r.top+'px';
+    box.style.right='auto'; box.style.bottom='auto';
+    sx=e.clientX; sy=e.clientY; ox=r.left; oy=r.top;
+    try{bar.setPointerCapture(e.pointerId);}catch(_){}
+  });
+  bar.addEventListener('pointermove',function(e){
+    if(!drag)return;
+    var nx=ox+(e.clientX-sx), ny=oy+(e.clientY-sy);
+    nx=Math.max(0,Math.min(nx,window.innerWidth-box.offsetWidth));
+    ny=Math.max(0,Math.min(ny,window.innerHeight-box.offsetHeight));
+    box.style.left=nx+'px'; box.style.top=ny+'px';
+  });
+  bar.addEventListener('pointerup',function(){drag=false;});
+  bar.addEventListener('pointercancel',function(){drag=false;});
+})();
+</script>
 </body>
 </html>
