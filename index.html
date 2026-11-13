@@ -2274,5 +2274,21 @@ nav{backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
     apply(window.HM_LANG || 'id');
   })();
 </script>
+
+<style id="kei-music-20261113">
+#kei-music-player{position:fixed;right:16px;bottom:16px;width:min(340px,calc(100vw - 32px));z-index:9999;background:#0B0B0C;border:1px solid rgba(245,179,1,.4);border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.5);overflow:hidden}
+#kei-music-player .kmp-head{display:flex;align-items:center;justify-content:space-between;padding:7px 10px 7px 12px;background:#131315;border-bottom:1px solid rgba(245,179,1,.18)}
+#kei-music-player .kmp-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#F5B301;font-weight:700}
+#kei-music-player .kmp-title span{color:#F5F2EA;font-weight:400;letter-spacing:.02em;text-transform:none}
+#kei-music-close{background:none;border:none;color:#F5F2EA;font-size:16px;line-height:1;cursor:pointer;padding:2px 4px}
+#kei-music-close:hover{color:#F5B301}
+#kei-music-player iframe{display:block;border:0;width:100%;height:80px}
+@media (max-width:480px){#kei-music-player{right:10px;bottom:10px}}
+</style>
+<div id="kei-music-player">
+  <div class="kmp-head"><div class="kmp-title">Now Playing &nbsp;<span>The Weeknd &amp; Playboi Carti — Timeless</span></div><button id="kei-music-close" aria-label="Tutup pemutar musik">&times;</button></div>
+  <iframe src="https://open.spotify.com/embed/track/1Es7AUAhQvapIcoh3qMKDL?utm_source=generator&amp;theme=0" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" title="The Weeknd and Playboi Carti - Timeless"></iframe>
+</div>
+<script>document.getElementById('kei-music-close').addEventListener('click',function(){document.getElementById('kei-music-player').style.display='none';});</script>
 </body>
 </html>
