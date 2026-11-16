@@ -1372,25 +1372,32 @@
       }
     }
 
-    // Efek ketikan pada gelar di hero
+    // Efek ketikan pada gelar di hero — selalu mengetik masuk dari kiri ke kanan;
+    // selesai: tahan sebentar lalu memudar (tanpa fase hapus/backspace)
     var roleEl = document.getElementById('roleType');
     if (roleEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       var roles = function () { return window.HM_ROLES ? window.HM_ROLES() : ['Web3 Automation Engineer', 'AI Agent Developer', 'Full Stack Developer']; };
-      var ri = 0, ci = roles()[0].length, del = true, timer = null;
+      var ri = 0, ci = 0, timer = null;
+      roleEl.style.transition = 'opacity .3s ease';
+      roleEl.textContent = '';
+      function fadeOut() {
+        roleEl.style.opacity = '0';
+        timer = setTimeout(function () {
+          ri = (ri + 1) % roles().length;
+          ci = 0;
+          roleEl.textContent = '';
+          roleEl.style.opacity = '1';
+          timer = setTimeout(tick, 160);
+        }, 320);
+      }
       function tick() {
         var word = roles()[ri % roles().length];
-        if (del) {
-          ci--;
-          if (ci <= 0) { del = false; ri = (ri + 1) % roles().length; ci = 0; timer = setTimeout(tick, 420); roleEl.textContent = ''; return; }
-          timer = setTimeout(tick, 34);
-        } else {
-          ci++;
-          if (ci >= roles()[ri].length) { del = true; timer = setTimeout(tick, 2100); }
-          else timer = setTimeout(tick, 62);
-        }
-        roleEl.textContent = roles()[ri % roles().length].slice(0, ci);
+        ci++;
+        roleEl.textContent = word.slice(0, ci);
+        if (ci >= word.length) { timer = setTimeout(fadeOut, 2100); }
+        else timer = setTimeout(tick, 62);
       }
-      timer = setTimeout(tick, 1800);
+      timer = setTimeout(tick, 600);
     }
 
     // Video Mooncheck: hormati reduced-motion, jeda saat di luar layar
