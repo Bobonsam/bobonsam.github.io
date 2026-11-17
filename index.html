@@ -332,7 +332,6 @@
   .tf-flip{
     position:absolute;inset:0;z-index:1;transform-style:preserve-3d;
     transition:transform .95s cubic-bezier(.3,.7,.25,1);
-    will-change:transform;
   }
   .tf-stage.knight .tf-flip{transform:rotateY(180deg)}
   .tf-face{
@@ -385,7 +384,6 @@
     content:"";position:absolute;left:-8%;right:-8%;top:50%;bottom:-6%;filter:blur(11px);
     -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 30%,#000 88%,transparent 100%);
     mask-image:linear-gradient(to bottom,transparent 0%,#000 30%,#000 88%,transparent 100%);
-    will-change:transform,opacity;
   }
   .tf-body-smoke::before{
     background:
@@ -462,7 +460,6 @@
   .idcard-swing{
     position:relative;transform-origin:50% -140px;
     animation:cardSwing 7s ease-in-out infinite;
-    will-change:transform;
   }
   @keyframes cardSwing{
     0%,100%{transform:rotate(2.1deg)}
@@ -597,7 +594,7 @@
   .stage-tilt{
     position:absolute;inset:0;
     transform:perspective(950px) rotateX(var(--hrx,0deg)) rotateY(var(--hry,0deg));
-    transition:transform .25s ease-out;will-change:transform;
+    transition:transform .25s ease-out;
   }
   .stage-photo{position:absolute;inset:0;z-index:1}
   .stage-photo > img{
@@ -1150,6 +1147,11 @@
     .p3d,.p3d-frame{box-shadow:none!important}
     .p3d-shine{display:none}
   }
+
+  /* Zoom fix (17 Nov 2026): jeda animasi lapisan foto saat halaman di-zoom
+     (pinch) supaya tekstur foto tidak di-raster ulang terus-menerus dan
+     tampil blank/pecah di GPU HP. Tampilan diam tidak berubah. */
+  html.zoomed .idcard-swing,html.zoomed .tf-glow,html.zoomed .tf-rim{animation-play-state:paused!important}
 </style>
 </head>
 <body>
@@ -2949,6 +2951,11 @@
     });
     refresh();
   })();
+</script>
+
+<script>
+  // Zoom fix: tandai status zoom visual (pinch) untuk menjeda animasi lapisan foto
+  (function(){var vv=window.visualViewport;if(!vv)return;function onZ(){document.documentElement.classList.toggle('zoomed',vv.scale>1.05);}vv.addEventListener('resize',onZ);onZ();})();
 </script>
 </body>
 </html>
