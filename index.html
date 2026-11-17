@@ -614,7 +614,7 @@
   .tab-btn.active{background:var(--accent);color:#fff}
   .tab-panel{display:none}
   .tab-panel.active{display:block;animation:tabIn .45s ease both}
-  @keyframes tabIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes tabIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
   .timeline{position:relative;margin-left:8px;padding-left:34px;border-left:2px solid var(--line);text-align:left}
   .job{position:relative;padding-bottom:36px}
   .job:last-child{padding-bottom:6px}
@@ -854,8 +854,31 @@
   .lightbox .cap{position:absolute;bottom:26px;left:0;right:0;text-align:center;color:#b9b7c9;font-size:14px;font-weight:600;padding:0 20px}
 
   /* ---------- Motion & foto 3D ---------- */
-  .rv{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,.7,.24,1)}
-  .rv.in{opacity:1;transform:translateY(0)}
+  /* Reveal masuk dari KIRI ke KANAN (geser masuk), bukan dari bawah —
+     searah teks gelar di bawah nama hero yang muncul huruf demi huruf */
+  .rv{opacity:0;transform:translateX(-42px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,.7,.24,1)}
+  .rv.in{opacity:1;transform:translateX(0)}
+  /* Kartu Keahlian & entri Pengalaman: muncul dari kiri ke kanan, berjenjang.
+     Sengaja memakai animasi panel aktif, BUKAN reveal scroll (.rv): panel
+     Keahlian tersembunyi (display:none) saat halaman dimuat, jadi pengamat
+     scroll tidak pernah melihat kartunya dan kartu nyangkut di opacity:0
+     (="hilang"). Animasi ini selalu jalan tiap tab dibuka, jadi kartu
+     Keahlian pasti tampil bergeser dari kiri seperti teks yang diketik. */
+  @keyframes slideFromLeft{from{opacity:0;transform:translateX(-42px)}to{opacity:1;transform:translateX(0)}}
+  .tab-panel.active .skill{animation:slideFromLeft .6s cubic-bezier(.16,.7,.24,1) both}
+  .tab-panel.active .skill:nth-child(2){animation-delay:.08s}
+  .tab-panel.active .skill:nth-child(3){animation-delay:.16s}
+  .tab-panel.active .skill:nth-child(4){animation-delay:.24s}
+  .tab-panel.active .skill:nth-child(5){animation-delay:.32s}
+  .tab-panel.active .skill:nth-child(6){animation-delay:.40s}
+  .tab-panel.active .job{animation:slideFromLeft .6s cubic-bezier(.16,.7,.24,1) both}
+  .tab-panel.active .job:nth-child(2){animation-delay:.06s}
+  .tab-panel.active .job:nth-child(3){animation-delay:.12s}
+  .tab-panel.active .job:nth-child(4){animation-delay:.18s}
+  .tab-panel.active .job:nth-child(5){animation-delay:.24s}
+  .tab-panel.active .job:nth-child(6){animation-delay:.30s}
+  .tab-panel.active .job:nth-child(7){animation-delay:.36s}
+  .tab-panel.active .job:nth-child(8){animation-delay:.42s}
   /* Latar galaksi antariksa + hujan gerimis: dua lapisan tetap DI BELAKANG
      seluruh konten (z-index negatif — teks, foto, dan kartu tetap terbaca
      jelas di atasnya). Lapisan galaksi (paling belakang): awan nebula
@@ -874,7 +897,7 @@
   .scroll-fx{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:clip;clip-path:inset(0)}
   .scroll-fx canvas{position:absolute;inset:0;width:100%;height:100%}
   /* Masuk hero berurutan (stagger) setelah layar loading memudar */
-  @keyframes riseIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes riseIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
   body.hero-in .hero-copy>*{animation:riseIn .75s cubic-bezier(.16,.7,.24,1) both}
   body.hero-in .hero-copy>*:nth-child(1){animation-delay:.02s}
   body.hero-in .hero-copy>*:nth-child(2){animation-delay:.14s}
@@ -944,8 +967,8 @@
     transition:transform .9s ease;
   }
   .p3d:hover .p3d-shine,.feature:hover .p3d-shine{transform:translateX(135%) skewX(-6deg)}
-  .rv.p3d{transform:perspective(1000px) rotateX(10deg) rotateY(-5deg) translateY(28px)}
-  .rv.p3d.in{transform:perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)}
+  .rv.p3d{transform:perspective(1000px) rotateY(-6deg) translateX(-42px)}
+  .rv.p3d.in{transform:perspective(1000px) rotateY(0deg) translateX(0)}
 
   /* ---------- Responsif ---------- */
   @media (max-width:980px){
@@ -2280,7 +2303,12 @@
       });
 
       // Reveal halus saat elemen masuk layar (berjenjang per grup)
-      var revealTargets = document.querySelectorAll('.sec-head, .big-head, .about-stage-wrap, .about-name, .about-desc, .stat-card, .tabs, .fact, .job, .skill, .work-gallery figure, .feature, .sub-title, .sub-note, .card, .holdings, .materi figure, .tech-card, .svc-card, .live-chart, .gallery figure, .contact, .cform, .thanks .big, .thanks p');
+      // CATATAN: .job & .skill SENGAJA tidak ikut reveal scroll ini. Panel
+      // Keahlian tersembunyi (display:none) saat halaman dimuat, jadi
+      // IntersectionObserver tidak pernah memicu kartunya dan kartu Keahlian
+      // nyangkut tak terlihat. Kartu di dalam panel tab tampil lewat animasi
+      // slideFromLeft (CSS .tab-panel.active) yang jalan tiap tab dibuka.
+      var revealTargets = document.querySelectorAll('.sec-head, .big-head, .about-stage-wrap, .about-name, .about-desc, .stat-card, .tabs, .fact, .work-gallery figure, .feature, .sub-title, .sub-note, .card, .holdings, .materi figure, .tech-card, .svc-card, .live-chart, .gallery figure, .contact, .cform, .thanks .big, .thanks p');
       var seenParents = [], seenCounts = [];
       revealTargets.forEach(function (el) {
         var i = seenParents.indexOf(el.parentNode);
