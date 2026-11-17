@@ -663,8 +663,9 @@
   .work-gallery figure{border-radius:12px;overflow:hidden;border:1px solid var(--line-soft);background:var(--surface);cursor:zoom-in;display:flex;flex-direction:column}
   /* Bingkai seragam 3/4 untuk semua foto kurir: foto tampil UTUH (contain,
      tanpa crop & tanpa peregangan slimfit), tinggi tiap kartu sama rata dan
-     caption sejajar. Area kosong di sisi foto diisi latar gelap bingkai. */
-  .work-gallery img{width:100%;aspect-ratio:3/4;object-fit:contain;background:var(--bg-2);display:block}
+     caption sejajar. Area kosong di sisi foto diisi blur-fill (salinan foto
+     yang sama, diperbesar & di-blur lembut) — bukan hitam polos lagi. */
+  .work-gallery img{width:100%;aspect-ratio:3/4;object-fit:contain;background:transparent;position:relative;z-index:1;display:block}
   .work-gallery figcaption{padding:10px 14px;font-size:13.5px;font-weight:600;color:var(--muted);margin-top:auto}
 
   /* ---------- Teknologi ---------- */
@@ -729,8 +730,9 @@
   .materi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
   .materi figure{border-radius:12px;overflow:hidden;border:1px solid var(--line-soft);background:var(--surface);cursor:zoom-in;display:flex;flex-direction:column}
   /* Bingkai seragam 4/3: materi (termasuk infografik berteks) tampil UTUH
-     dengan contain — tidak ada teks yang kepotong — dan caption sejajar. */
-  .materi img{width:100%;aspect-ratio:4/3;object-fit:contain;background:var(--bg-2);display:block}
+     dengan contain — tidak ada teks yang kepotong — dan caption sejajar.
+     Area kosong di sisi foto diisi blur-fill seperti galeri kurir. */
+  .materi img{width:100%;aspect-ratio:4/3;object-fit:contain;background:transparent;position:relative;z-index:1;display:block}
   .materi figcaption{padding:9px 12px;font-size:12.5px;font-weight:600;color:var(--muted);margin-top:auto}
 
   /* ---------- Layanan ---------- */
@@ -957,7 +959,18 @@
   }
   :root[data-theme="light"] .p3d-frame{box-shadow:0 16px 30px rgba(70,35,130,.25),0 5px 12px rgba(124,43,214,.22)}
   .p3d:hover .p3d-frame{transform:translateZ(40px)}
-  .work-gallery .p3d-frame,.materi .p3d-frame{border-radius:12px 12px 0 0}
+  .work-gallery .p3d-frame,.materi .p3d-frame{border-radius:12px 12px 0 0;background:var(--bg-2)}
+  /* Blur-fill di dalam bingkai seragam (kurir & materi): lapisan paling
+     belakang berupa salinan foto yang sama, ditampilkan cover, diperbesar
+     lewat inset negatif, di-blur 24px dan sedikit digelapkan — jadi sisi
+     kosong bingkai menyatu dengan fotonya, bukan nampan hitam polos.
+     Foto aslinya tetap tampil utuh (contain) di atasnya (z-index:1). */
+  .p3d-blurfill{
+    position:absolute;inset:-28px;z-index:0;pointer-events:none;
+    background-size:cover;background-position:center;background-repeat:no-repeat;
+    filter:blur(24px) brightness(.6) saturate(1.15);
+  }
+  .work-gallery .p3d-frame>img,.materi .p3d-frame>img{position:relative;z-index:1;background:transparent}
   .gallery .p3d-frame{border-radius:16px}
   .gallery figure.p3d figcaption{transform:translateZ(30px);border-radius:0 0 16px 16px}
   .p3d-shine{
@@ -2289,6 +2302,16 @@
         frame.className = 'p3d-frame';
         img.parentNode.insertBefore(frame, img);
         frame.appendChild(img);
+        // Blur-fill khusus bingkai seragam kurir & materi: salinan foto yang
+        // sama sebagai latar blur di belakang foto utuh (contain), supaya
+        // area kosong di sisinya tidak lagi hitam polos.
+        if (fig.parentElement && (fig.parentElement.classList.contains('work-gallery') || fig.parentElement.classList.contains('materi'))) {
+          var blurFill = document.createElement('span');
+          blurFill.className = 'p3d-blurfill';
+          blurFill.setAttribute('aria-hidden', 'true');
+          blurFill.style.backgroundImage = 'url("' + img.getAttribute('src') + '")';
+          frame.insertBefore(blurFill, img);
+        }
         var shine = document.createElement('span');
         shine.className = 'p3d-shine';
         shine.setAttribute('aria-hidden', 'true');
