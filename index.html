@@ -272,6 +272,10 @@
   .hero .roles{
     margin-top:6px;font-size:clamp(16px,2.4vw,20px);font-weight:600;color:var(--muted);
     min-height:1.6em;
+    /* Asuransi tampil: baris gelar tidak boleh tertutup lapisan hero lain,
+       terpotong, atau nyangkut tak terlihat — selalu tampil apa pun status
+       animasi masuknya */
+    position:relative;z-index:2;opacity:1;visibility:visible;overflow-wrap:break-word;
   }
   .hero .roles .caret{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:-2px;margin-left:3px;animation:caretBlink 1s steps(1) infinite}
   @keyframes caretBlink{50%{opacity:0}}
@@ -1009,23 +1013,35 @@
     .skills{grid-template-columns:1fr}
     .svc-grid{grid-template-columns:1fr}
     .feature{grid-template-columns:1fr}
-    .feature-media img{min-height:0;aspect-ratio:2/1}
+    /* Foto/banner proyek di ponsel: rasio ASLI fotonya (bukan dipaksa 2/1) —
+       tampil utuh penuh lebar tanpa nampan hitam di sisi-sisinya */
+    .feature-media img{min-height:0;aspect-ratio:auto;height:auto}
     .feature-media video{min-height:0;aspect-ratio:5/4}
     .foot-grid{grid-template-columns:1fr;gap:22px}
   }
   @media (max-width:620px){
     .cards{grid-template-columns:1fr}
     .hold-grid{grid-template-columns:repeat(2,1fr)}
-    .materi{grid-template-columns:repeat(2,1fr)}
     .tech-grid{grid-template-columns:repeat(2,1fr)}
     .work-gallery{grid-template-columns:1fr}
     .gallery{grid-template-columns:1fr}
-    /* Galeri kurir di ponsel: satu kolom, bingkai seragam 3/4 yang sama seperti
-       desktop — foto tetap tampil UTUH (contain) di dalam bingkainya, tidak
-       kepotong, tidak jadi menara slimfit, dan tinggi kartu rata */
-    .work-gallery{gap:18px;max-width:520px;margin-left:auto;margin-right:auto}
-    .work-gallery .p3d-frame{display:block}
-    .work-gallery figure.rv.p3d{transform:none}
+    /* === Foto di ponsel: SATU kolom, rasio ASLI tiap foto, penuh lebar ===
+       Bingkai seragam paksa (3/4 kurir, 4/3 materi) + contain membuat foto
+       terapung di dalam bingkai dengan pita blur/hitam yang beda-beda tiap
+       foto — itulah yang terlihat acak-acakan & tidak beraturan di HP.
+       Sekarang tiap foto tampil utuh mengikuti rasio aslinya, memenuhi lebar
+       kartunya, tanpa pita kosong; yang menyatukan tampilannya adalah lebar
+       kolom, radius, jarak, dan bilah caption yang seragam. */
+    .work-gallery,.materi{gap:16px;max-width:520px;margin-left:auto;margin-right:auto}
+    .materi{grid-template-columns:1fr}
+    .work-gallery img,.materi img{aspect-ratio:auto;height:auto}
+    /* Khusus foto kurir yang sangat ramping (480x1040): tingginya dibatasi
+       76vh supaya tidak jadi menara slimfit; foto tetap utuh (contain),
+       terpusat di atas latar kartu yang bersih — tanpa lapisan blur-fill */
+    .work-gallery img{max-height:76vh}
+    .work-gallery .p3d-blurfill,.materi .p3d-blurfill{display:none}
+    .work-gallery .p3d-frame,.materi .p3d-frame{display:block;background:var(--surface)}
+    .work-gallery figure.rv.p3d,.materi figure.rv.p3d,.gallery figure.rv.p3d{transform:none}
     .job ul{grid-template-columns:1fr}
     .hero{padding-top:118px}
     .orb-b{right:24%;bottom:-150px}
@@ -2210,26 +2226,102 @@
       }
     }
 
-    // Efek ketikan pada gelar di hero
-    var roleEl = document.getElementById('roleType');
-    if (roleEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      var roles = function () { return window.HM_ROLES ? window.HM_ROLES() : ['Web3 Automation Engineer', 'AI Agent Developer', 'Full Stack Developer']; };
-      var ri = 0, ci = roles()[0].length, del = true, timer = null;
+    // Efek ketikan pada gelar di hero — dibuat ANDAL di ponsel:
+    // Versi lama mulai dari timer buta 1,8 dtk sejak halaman dimuat, padahal
+    // layar loading terminal masih menutupi hero ±3,5 dtk (lebih lama di HP
+    // lambat) — kata pertama sudah terhapus di balik loading, dan yang
+    // pertama terlihat bisa jeda teks kosongnya. Bila HP melaporkan
+    // prefers-reduced-motion, versi lama malah tidak pernah mulai sama
+    // sekali sehingga barisnya terasa hilang/mati.
+    // Versi ini: (1) menunggu hero benar-benar tampil (body.hero-in / loader
+    // hilang) sebelum mulai, dengan rem pengaman 4,5 dtk; (2) mulai dengan
+    // MENGETIK kata pertama dari kosong, bukan menghapusnya; (3) jeda kosong
+    // antar-kata pendek (260 mdtk); (4) jeda saat halaman disembunyikan dan
+    // lanjut lagi — tidak pernah parkir di teks kosong — saat kembali
+    // terlihat; (5) mode reduced-motion tetap berganti kata utuh tiap
+    // ±2,8 dtk tanpa animasi per huruf, jadi barisnya tetap hidup di ketiga
+    // bahasa (daftar kata dibaca segar tiap langkah lewat HM_ROLES()).
+    (function () {
+      var roleEl = document.getElementById('roleType');
+      if (!roleEl) return;
+      function getRoles() {
+        try { if (window.HM_ROLES) { var r = window.HM_ROLES(); if (r && r.length) return r; } } catch (e) {}
+        return ['Web3 Automation Engineer', 'AI Agent Developer', 'Full Stack Developer'];
+      }
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var ri = 0, ci = 0, del = false, timer = null, started = false;
+      function render() {
+        var list = getRoles();
+        var word = list[ri % list.length];
+        if (ci > word.length) ci = word.length;
+        if (ci < 0) ci = 0;
+        roleEl.textContent = word.slice(0, ci);
+      }
       function tick() {
-        var word = roles()[ri % roles().length];
+        var list = getRoles();
+        var word = list[ri % list.length];
+        if (ci > word.length) ci = word.length;
         if (del) {
           ci--;
-          if (ci <= 0) { del = false; ri = (ri + 1) % roles().length; ci = 0; timer = setTimeout(tick, 420); roleEl.textContent = ''; return; }
-          timer = setTimeout(tick, 34);
+          if (ci <= 0) {
+            ci = 0; del = false; ri = (ri + 1) % list.length;
+            render();
+            timer = setTimeout(tick, 260);
+            return;
+          }
+          timer = setTimeout(tick, 30);
         } else {
           ci++;
-          if (ci >= roles[ri].length) { del = true; timer = setTimeout(tick, 2100); }
+          if (ci >= word.length) { del = true; timer = setTimeout(tick, 2100); }
           else timer = setTimeout(tick, 62);
         }
-        roleEl.textContent = roles()[ri % roles().length].slice(0, ci);
+        render();
       }
-      timer = setTimeout(tick, 1800);
-    }
+      function rotate() {
+        // Reduced-motion: ganti kata UTUH tanpa animasi — tidak pernah kosong
+        var list = getRoles();
+        ri = (ri + 1) % list.length;
+        ci = list[ri].length;
+        render();
+        timer = setTimeout(rotate, 2800);
+      }
+      function begin() {
+        if (started) return;
+        started = true;
+        if (reduced) {
+          var caret = roleEl.parentNode ? roleEl.parentNode.querySelector('.caret') : null;
+          if (caret) caret.style.display = 'none';
+          ci = getRoles()[0].length;
+          render();
+          timer = setTimeout(rotate, 2800);
+        } else {
+          ci = 0; del = false; ri = 0;
+          render();
+          timer = setTimeout(tick, 350);
+        }
+      }
+      // Jangan biarkan siklus parkir di teks kosong saat webview di-background
+      // (browser menjeda timer halaman tersembunyi secara agresif di HP)
+      document.addEventListener('visibilitychange', function () {
+        if (!started) return;
+        if (document.hidden) {
+          if (timer) { clearTimeout(timer); timer = null; }
+        } else if (!timer) {
+          if (reduced) { timer = setTimeout(rotate, 600); }
+          else {
+            if (!roleEl.textContent) { ci = 0; del = false; }
+            timer = setTimeout(tick, 160);
+          }
+        }
+      });
+      // Mulai hanya setelah hero tampil; rem pengaman: mulai juga paling
+      // lambat 4,5 dtk apa pun yang terjadi dengan layar loading
+      var t0 = Date.now();
+      (function waitHero() {
+        if (document.body.classList.contains('hero-in') || !document.getElementById('loader') || Date.now() - t0 > 4500) { begin(); return; }
+        setTimeout(waitHero, 200);
+      })();
+    })();
 
     // Video Mooncheck: hormati reduced-motion, jeda saat di luar layar
     var mcVideo = document.getElementById('mooncheckVideo');
